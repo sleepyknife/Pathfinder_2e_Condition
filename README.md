@@ -1,4 +1,3 @@
-# Pathfinder_2e_Critical_Failure
-For create critical Fail random effect
+# Pathfinder_2e_Condition
 
 Use python -m http.server  to test locally
