@@ -3,9 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const sortAlphabeticallyTab = document.getElementById('sortAlphabetically');
     const sortByCategoryTab = document.getElementById('sortByCategory');
 
-    // Fetch the JSON data from the server
-    fetch('/Ref/zh-TW.json')
-        .then(response => response.json())
+    // Fetch the JSON data from the current directory
+    fetch('Ref/zh-TW.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             // Default sort by alphabetically on page load
             renderList(sortAlphabetically(data));
@@ -21,7 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 setActiveTab(sortByCategoryTab);
             });
         })
-        .catch(error => console.error('Error fetching data:', error));
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = 'Error fetching data: ' + error.message;
+            listContainer.appendChild(errorMessage);
+        });
 
     function sortAlphabetically(data) {
         return data.sort((a, b) => a.name.localeCompare(b.name));
