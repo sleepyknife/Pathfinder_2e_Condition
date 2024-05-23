@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON List</title>
+    <title>JSON Table</title>
     <style>
         .tab {
             cursor: pointer;
@@ -15,12 +15,18 @@
         .active {
             background-color: #ccc;
         }
-        .list {
-            list-style-type: none;
-            padding: 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-        .list li {
-            margin: 5px 0;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
         }
     </style>
 </head>
@@ -29,7 +35,15 @@
         <span class="tab" id="sortAlphabetically">按照字母排列</span>
         <span class="tab" id="sortByCategory">按照類別排列</span>
     </div>
-    <ul class="list" id="listContainer"></ul>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
 
     <script src="app.js"></script>
 </body>
