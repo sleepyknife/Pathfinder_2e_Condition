@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON List</title>
+    <style>
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            margin: 0 5px;
+            background-color: #f1f1f1;
+            display: inline-block;
+        }
+        .active {
+            background-color: #ccc;
+        }
+        .list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .list li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <span class="tab" id="sortAlphabetically">按照字母排列</span>
+        <span class="tab" id="sortByCategory">按照類別排列</span>
+    </div>
+    <ul class="list" id="listContainer"></ul>
+
+    <script src="app.js"></script>
+</body>
+</html>
