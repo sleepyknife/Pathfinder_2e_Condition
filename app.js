@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const itemList = document.getElementById('itemList');
     const detailsContainer = document.getElementById('detailsContainer');
-    const sortAlphabeticallyTab = document.getElementById('sortAlphabetically');
-    const sortByCategoryTab = document.getElementById('sortByCategory');
+    const categoryTabs = document.querySelectorAll('.category-tab');
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    const resetSelectionBtn = document.getElementById('resetSelectionBtn');
+
+    let dataCache = [];
 
     // Fetch the JSON data from the current directory
     fetch('Ref/zh-TW.json')
@@ -13,19 +16,22 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // Default sort by alphabetically on page load
-            renderList(sortAlphabetically(data));
-            renderDetails(data);
-            setActiveTab(sortAlphabeticallyTab);
+            dataCache = data;
+            // Default sort by category on page load
+            renderList(dataCache);
+            renderDetails(dataCache);
+            setActiveTab(categoryTabs[0]);
 
-            sortAlphabeticallyTab.addEventListener('click', () => {
-                renderList(sortAlphabetically(data));
-                setActiveTab(sortAlphabeticallyTab);
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    highlightCategoryItems(tab.dataset.category);
+                    setActiveTab(tab);
+                });
             });
 
-            sortByCategoryTab.addEventListener('click', () => {
-                renderList(sortByCategory(data));
-                setActiveTab(sortByCategoryTab);
+            resetSelectionBtn.addEventListener('click', () => {
+                resetHighlight();
+                resetActiveTab();
             });
         })
         .catch(error => {
@@ -35,19 +41,27 @@ document.addEventListener('DOMContentLoaded', () => {
             itemList.appendChild(errorMessage);
         });
 
-    function sortAlphabetically(data) {
-        return data.sort((a, b) => a.name.localeCompare(b.name));
-    }
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 200) {
+            backToTopBtn.style.display = 'block';
+        } else {
+            backToTopBtn.style.display = 'none';
+        }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
     function sortByCategory(data) {
         const categorizedData = data.reduce((acc, item) => {
-            acc[item.category] = acc[item.category] || [];
-            acc[item.category].push(item);
+            acc[item.類別] = acc[item.類別] || [];
+            acc[item.類別].push(item);
             return acc;
         }, {});
 
         const sortedCategories = Object.keys(categorizedData).sort();
-        return sortedCategories.flatMap(category => categorizedData[category].sort((a, b) => a.name.localeCompare(b.name)));
+        return sortedCategories.flatMap(category => categorizedData[category].sort((a, b) => a.狀態.localeCompare(b.狀態)));
     }
 
     function renderList(data) {
@@ -55,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         data.forEach(item => {
             const listItem = document.createElement('div');
             listItem.className = 'list-item';
-            listItem.innerHTML = `<a href="#${item.name}">${item.name}</a>`;
+            listItem.innerHTML = `<a href="#${item.狀態}">${item.英語名} ${item.狀態}</a>`;
             itemList.appendChild(listItem);
         });
     }
@@ -65,10 +79,44 @@ document.addEventListener('DOMContentLoaded', () => {
         data.forEach(item => {
             const detailsBox = document.createElement('div');
             detailsBox.className = 'details-box';
-            detailsBox.id = item.name;
-            detailsBox.innerHTML = `<h3>${item.name}</h3><p>Category: ${item.category}</p>`;
+            detailsBox.id = item.狀態;
+            detailsBox.innerHTML = `
+                <table>
+                    <tr>
+                        <th colspan="2">${item.狀態} (${item.英語名})</th>
+                    </tr>
+                    <tr>
+                        <td>數值影響</td>
+                        <td>${item.數值影響}</td>
+                    </tr>
+                    <tr>
+                        <td>效果描述</td>
+                        <td>${item.效果描述.replace(/\n/g, '<br>')}</td>
+                    </tr>
+                </table>`;
             detailsContainer.appendChild(detailsBox);
         });
+    }
+
+    function highlightCategoryItems(category) {
+        document.querySelectorAll('.list-item').forEach(item => {
+            item.classList.remove('highlight');
+        });
+        dataCache.forEach(item => {
+            if (item.類別.includes(category)) {
+                document.querySelector(`.list-item a[href="#${item.狀態}"]`).parentElement.classList.add('highlight');
+            }
+        });
+    }
+
+    function resetHighlight() {
+        document.querySelectorAll('.list-item').forEach(item => {
+            item.classList.remove('highlight');
+        });
+    }
+
+    function resetActiveTab() {
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
     }
 
     function setActiveTab(activeTab) {

@@ -17,9 +17,26 @@
         }
         .list {
             margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
         }
         .list-item {
-            margin: 5px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .list-item a {
+            text-decoration: none;
+            color: #333;
+        }
+        .list-item a:hover {
+            text-decoration: underline;
+        }
+        .highlight {
+            background-color: #ffff99;
         }
         .details {
             margin-top: 40px;
@@ -29,15 +46,70 @@
             padding: 10px;
             margin-bottom: 20px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th, td:first-child {
+            width: 150px; /* 固定第一個欄位的寬度 */
+        }
+        .details-box th {
+            background-color: #e0e0e0; /* 名稱行顏色 */
+        }
+        .details-box tr:nth-child(2) td {
+            background-color: #f9f9f9; /* 數值影響行顏色 */
+        }
+        .details-box tr:nth-child(3) td {
+            background-color: #e9f7fc; /* 效果描述行顏色 */
+        }
+        #backToTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            display: none; /* Initially hidden */
+        }
+        #resetSelectionBtn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <div>
-        <span class="tab" id="sortAlphabetically">按照字母排列</span>
-        <span class="tab" id="sortByCategory">按照類別排列</span>
+		<span class="tab category-tab" data-category="力量">力量</span>
+		<span class="tab category-tab" data-category="敏捷">敏捷</span>
+		<span class="tab category-tab" data-category="體質">體質</span>
+		<span class="tab category-tab" data-category="智力">智力</span>
+		<span class="tab category-tab" data-category="反射">反射</span>
+		<span class="tab category-tab" data-category="意志">意志</span>
+		<span class="tab category-tab" data-category="強韌">強韌</span>
+		<span class="tab category-tab" data-category="AC">AC</span>
+        <span class="tab category-tab" data-category="檢定">檢定</span>
+        <span class="tab category-tab" data-category="傷害">傷害</span>
+        <span class="tab category-tab" data-category="特別">特別</span>
+		
     </div>
     <div class="list" id="itemList"></div>
     <div class="details" id="detailsContainer"></div>
+    <button id="backToTopBtn">回到最上面</button>
+    <button id="resetSelectionBtn">取消選項</button>
 
     <script src="app.js"></script>
 </body>
