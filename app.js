@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const listContainer = document.getElementById('listContainer');
+    const tableBody = document.getElementById('tableBody');
     const sortAlphabeticallyTab = document.getElementById('sortAlphabetically');
     const sortByCategoryTab = document.getElementById('sortByCategory');
 
@@ -13,24 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             // Default sort by alphabetically on page load
-            renderList(sortAlphabetically(data));
+            renderTable(sortAlphabetically(data));
             setActiveTab(sortAlphabeticallyTab);
 
             sortAlphabeticallyTab.addEventListener('click', () => {
-                renderList(sortAlphabetically(data));
+                renderTable(sortAlphabetically(data));
                 setActiveTab(sortAlphabeticallyTab);
             });
 
             sortByCategoryTab.addEventListener('click', () => {
-                renderList(sortByCategory(data));
+                renderTable(sortByCategory(data));
                 setActiveTab(sortByCategoryTab);
             });
         })
         .catch(error => {
             console.error('Error fetching data:', error);
-            const errorMessage = document.createElement('p');
-            errorMessage.textContent = 'Error fetching data: ' + error.message;
-            listContainer.appendChild(errorMessage);
+            const errorMessage = document.createElement('tr');
+            const errorCell = document.createElement('td');
+            errorCell.colSpan = 2;
+            errorCell.textContent = 'Error fetching data: ' + error.message;
+            errorMessage.appendChild(errorCell);
+            tableBody.appendChild(errorMessage);
         });
 
     function sortAlphabetically(data) {
@@ -48,12 +51,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return sortedCategories.flatMap(category => categorizedData[category].sort((a, b) => a.name.localeCompare(b.name)));
     }
 
-    function renderList(data) {
-        listContainer.innerHTML = '';
+    function renderTable(data) {
+        tableBody.innerHTML = '';
         data.forEach(item => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${item.name} (${item.category})`;
-            listContainer.appendChild(listItem);
+            const row = document.createElement('tr');
+            const nameCell = document.createElement('td');
+            nameCell.textContent = item.name;
+            const categoryCell = document.createElement('td');
+            categoryCell.textContent = item.category;
+            row.appendChild(nameCell);
+            row.appendChild(categoryCell);
+            tableBody.appendChild(row);
         });
     }
 
