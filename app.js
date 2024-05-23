@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Default sort by category on page load
             renderList(dataCache);
             renderDetails(dataCache);
-            setActiveTab(categoryTabs[0]);
+            
 
             categoryTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -117,10 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetActiveTab() {
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+		resetSelectionBtn.style.display = 'none';
     }
 
     function setActiveTab(activeTab) {
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
         activeTab.classList.add('active');
+		resetSelectionBtn.style.display = 'block';
     }
 });

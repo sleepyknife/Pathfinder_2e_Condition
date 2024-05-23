@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PathFinder 2E Condition Table</title>
     <style>
+        .tab-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
         .tab {
             cursor: pointer;
             padding: 10px;
-            margin: 0 5px;
+            margin: 5px;
             background-color: #f1f1f1;
             display: inline-block;
+            border-radius: 5px;
         }
         .active {
             background-color: #ccc;
@@ -80,7 +86,7 @@
         }
         #resetSelectionBtn {
             position: fixed;
-            top: 20px;
+            bottom: 60px;
             right: 20px;
             background-color: rgba(255, 0, 0, 0.5);
             color: white;
@@ -88,6 +94,7 @@
             padding: 10px 20px;
             cursor: pointer;
             border-radius: 5px;
+			display: none; /* Initially hidden */
         }
     </style>
 </head>
