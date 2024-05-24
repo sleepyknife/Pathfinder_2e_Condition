@@ -5,6 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PathFinder 2E Condition Table</title>
     <style>
+		body {
+            font-family: Arial, sans-serif;
+        }
+		.header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #613030;
+            color: white;
+            padding: 10px 20px;
+        }
+        .menu-button {
+            cursor: pointer;
+            background-color: #613030;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+			font-size: 30px;
+        }
+        .menu {
+			position: fixed;
+			top: 0;
+			left: -250px; /* Initial position off-screen */
+			height: 100%;
+			width: 250px;
+			background-color: white;
+			border-right: 1px solid #ddd;
+			box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+			z-index: 1000;
+			overflow-x: hidden;
+			transition: left 0.3s; /* Animation for sliding in */
+			padding-top: 60px;
+        }
+		.menu.open {
+			left: 0; /* Slide in position */
+		}
+        .menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            text-align: center;
+        }
+        .menu a:hover {
+            background-color: #f1f1f1;
+        }
+		.header h1 {
+            margin: 0;
+            text-align: center;
+            flex-grow: 1;
+        }
         .tab-container {
             display: flex;
             flex-wrap: wrap;
@@ -96,9 +148,31 @@
             border-radius: 5px;
 			display: none; /* Initially hidden */
         }
+		.overlay {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            background-color: rgba(0,0,0,0.5);
+            overflow-x: hidden;
+            transition: 0.5s;
+            display: none;
+        }
     </style>
 </head>
 <body>
+	<div class="header">
+        <button class="menu-button" onclick="openMenu()">☰</button>
+        <h1>PathFinder 2E Condition Table</h1>
+    </div>
+	<div class="menu" id="menu">
+        <a href="https://sleepyknife.github.io/Pathfinder_2e_Critical_Hits/">Pathfinder 2E Critical Hits</a>
+        <a href="https://sleepyknife.github.io/Pathfinder_2e_Critical_Failure/">PathFinder 2E Critical Failure Result</a>
+        <a href="https://sleepyknife.github.io/Pathfinder_2e_Condition/">PathFinder 2E Condition Table</a>
+    </div>
+	<div class="overlay" id="overlay" onclick="closeMenu()"></div>
     <div>
 		<span class="tab category-tab" data-category="常見">常見</span>
 		<span class="tab category-tab" data-category="力量">力量</span>
@@ -118,7 +192,18 @@
     <div class="details" id="detailsContainer"></div>
     <button id="backToTopBtn">回到最上面</button>
     <button id="resetSelectionBtn">取消選項</button>
+	
+	<script>
+        function openMenu() {
+            document.getElementById("menu").classList.add("open");
+            document.getElementById("overlay").style.display = "block";
+        }
 
+        function closeMenu() {
+            document.getElementById("menu").classList.remove("open");
+            document.getElementById("overlay").style.display = "none";
+        }
+    </script>
     <script src="app.js"></script>
 </body>
 </html>
