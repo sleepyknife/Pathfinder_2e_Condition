@@ -20,18 +20,21 @@ document.addEventListener('DOMContentLoaded', () => {
             // Default sort by category on page load
             renderList(dataCache);
             renderDetails(dataCache);
-            
+
 
             categoryTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     highlightCategoryItems(tab.dataset.category);
                     setActiveTab(tab);
+					resetSelectionBtn.style.display = 'block';
                 });
             });
 
             resetSelectionBtn.addEventListener('click', () => {
                 resetHighlight();
                 resetActiveTab();
+				resetSelectionBtn.style.display = 'none';
+				renderDetails(dataCache);
             });
         })
         .catch(error => {
@@ -107,6 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector(`.list-item a[href="#${item.狀態}"]`).parentElement.classList.add('highlight');
             }
         });
+		const highlightedItems = dataCache.filter(item => item.類別.includes(category));
+		renderDetails(highlightedItems);
     }
 
     function resetHighlight() {
@@ -117,12 +122,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetActiveTab() {
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-		resetSelectionBtn.style.display = 'none';
     }
 
     function setActiveTab(activeTab) {
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
         activeTab.classList.add('active');
-		resetSelectionBtn.style.display = 'block';
     }
 });
