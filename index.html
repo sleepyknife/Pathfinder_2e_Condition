@@ -203,6 +203,19 @@
             document.getElementById("menu").classList.remove("open");
             document.getElementById("overlay").style.display = "none";
         }
+		
+		// Touch event listeners for opening menu
+		window.addEventListener('touchstart', (e) => {
+			touchStartX = e.touches[0].clientX;
+		});
+
+		window.addEventListener('touchmove', (e) => {
+			const touchEndX = e.touches[0].clientX;
+			if (touchStartX < 50 && touchEndX > touchStartX + 100) {
+				openMenu();
+			}
+		});
+
     </script>
     <script src="app.js"></script>
 </body>
