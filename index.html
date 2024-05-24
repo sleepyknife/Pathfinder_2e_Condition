@@ -206,6 +206,7 @@
 		
 		// Touch event listeners for opening menu
 		window.addEventListener('touchstart', (e) => {
+			e.preventDefault(); // Prevent default behavior such as back navigation
 			touchStartX = e.touches[0].clientX;
 		});
 
